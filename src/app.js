@@ -2,12 +2,17 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const passport = require("passport");
 
 // Initialize app
 const app = express();
 
 // Importing routes
 const roomRoutes = require("./routes/rooms");
+const userRoutes = require("./routes/users");
+
+// Passport Strategies
+const { localStrategy, jwtStrategy } = require("./middleware/passport");
 
 // Importing database
 const db = require("./db/models");
@@ -16,8 +21,14 @@ const db = require("./db/models");
 app.use(cors());
 app.use(express.json());
 
+// Passport Setup
+app.use(passport.initialize());
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
 // Using routes
 app.use("/rooms", roomRoutes);
+app.use(userRoutes);
 
 // Media
 app.use("/media", express.static(path.join(__dirname, "src/media")));
