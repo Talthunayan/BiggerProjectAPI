@@ -7,7 +7,14 @@ const { User, Room, Post } = require("../db/models");
 // Fetch post
 exports.fetchPost = async (postId, next) => {
   try {
-    const post = await Post.findByPk(postId);
+    const post = await Post.findByPk(postId, {
+      include: [
+        {
+          model: Room,
+          as: "room",
+        },
+      ],
+    });
     return post;
   } catch (error) {
     next(error);
@@ -19,11 +26,11 @@ exports.postList = async (req, res, next) => {
   try {
     const posts = await Post.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
-      // include: {
-      //   model: Product,
-      //   as: "products",
-      //   attributes: { exclude: ["createdAt", "updatedAt"] },
-      // },
+      include: {
+        model: Room,
+        as: "room",
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      },
     });
     res.json(posts);
   } catch (err) {

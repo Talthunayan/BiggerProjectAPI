@@ -3,6 +3,7 @@ const slugify = require("slugify");
 
 // Databse
 const { Room } = require("../db/models");
+const { Post } = require("../db/models");
 
 // Fetch room
 exports.fetchRoom = async (roomId, next) => {
@@ -19,11 +20,11 @@ exports.roomList = async (req, res, next) => {
   try {
     const rooms = await Room.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
-      //   include: {
-      //     model: Shop,
-      //     as: "shop",
-      //     attributes: ["id"],
-      //   },
+      include: {
+        model: Post,
+        as: "post",
+        attributes: ["id"],
+      },
     });
     res.json(rooms);
   } catch (err) {
