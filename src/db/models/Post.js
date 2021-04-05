@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    Image: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   });
   SequelizeSlugify.slugifyModel(Post, {
     source: ["text"],

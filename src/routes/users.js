@@ -12,9 +12,9 @@ const {
   signin,
   fetchUser,
   userList,
-  userCreate,
   userUpdate,
   userDelete,
+  postCreate,
 } = require("../controllers/userController");
 
 // Sign up "register"
@@ -43,18 +43,18 @@ router.param("userId", async (req, res, next, userId) => {
 // user list
 router.get("/", userList);
 
-// Adding Users
-router.post(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  upload.single("image"),
-  userCreate
-);
-
 // Deleting Users
 router.delete("/:userId", userDelete);
 
 // Updating Users
 router.put("/:userId", upload.single("image"), userUpdate);
+
+// Linking A Post to A User
+router.post(
+  "/:userId/posts",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  postCreate
+);
 
 module.exports = router;

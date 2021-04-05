@@ -38,19 +38,19 @@ exports.postList = async (req, res, next) => {
   }
 };
 
-// Create post
-exports.postCreate = async (req, res, next) => {
-  try {
-    if (req.file) {
-      req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
-    }
-    //   req.body.userId = req.user.id; // relation stuff
-    const newPost = await Post.create(req.body);
-    res.status(201).json(newPost);
-  } catch (err) {
-    next(err);
-  }
-};
+// // Create post
+// exports.postCreate = async (req, res, next) => {
+//   try {
+//     if (req.file) {
+//       req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
+//     }
+//     //   req.body.userId = req.user.id; // relation stuff
+//     const newPost = await Post.create(req.body);
+//     res.status(201).json(newPost);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 // Update post
 exports.postUpdate = async (req, res, next) => {

@@ -8,7 +8,6 @@ const upload = require("../middleware/multer");
 
 // controllers
 const {
-  postCreate,
   postList,
   postUpdate,
   postDelete,
@@ -30,14 +29,6 @@ router.param("postId", async (req, res, next, postId) => {
 
 // Post list
 router.get("/", postList);
-
-// Adding Posts
-router.post(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  upload.single("image"),
-  postCreate
-);
 
 // Deleting Posts
 router.delete("/:postId", postDelete);

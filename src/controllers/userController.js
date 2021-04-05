@@ -80,28 +80,6 @@ exports.userList = async (req, res, next) => {
   }
 };
 
-// Create user
-exports.userCreate = async (req, res, next) => {
-  try {
-    // const foundUser = await User.findOne({
-    //   where: { userId: req.user.id },
-    // });
-    // if (foundUser) {
-    //   const err = new Error("You already have a room");
-    //   err.status = 400;
-    //   next(err);
-    // }
-    if (req.file) {
-      req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
-    }
-    // req.body.userId = req.user.id; // relation stuff
-    const newUser = await User.create(req.body);
-    res.status(201).json(newUser);
-  } catch (err) {
-    next(err);
-  }
-};
-
 // Update user
 exports.userUpdate = async (req, res, next) => {
   try {
@@ -121,6 +99,23 @@ exports.userDelete = async (req, res, next) => {
     await req.user.destroy();
     res.status(204).end();
   } catch (err) {
+    next(err);
+  }
+};
+//*** Posts ***//
+// Create post
+exports.postCreate = async (req, res, next) => {
+  console.log("userId", req.post.userId);
+  if (req.user.id === req.post.userId) {
+    if (req.file) {
+      req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
+    }
+    req.body.userId = req.user.id;
+    const newPost = await Post.create(req.body);
+    res.status(201).json(newPost);
+  } else {
+    const err = new Error("Unauthorized");
+    err.status = 401;
     next(err);
   }
 };

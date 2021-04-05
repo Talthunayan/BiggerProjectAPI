@@ -1,6 +1,10 @@
 // Dependancies
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
+
+// importing
+const upload = require("../middleware/multer");
 
 // controllers
 const {
@@ -8,6 +12,7 @@ const {
   roomUpdate,
   roomDelete,
   fetchRoom,
+  // postCreate,
 } = require("../controllers/roomController");
 
 // Param Middleware
@@ -31,5 +36,13 @@ router.delete("/:roomId", roomDelete);
 
 // Updating Rooms
 router.put("/:roomId", roomUpdate);
+
+// // Adding Posts to Room
+// router.post(
+//   "/:roomId/posts",
+//   passport.authenticate("jwt", { session: false }),
+//   upload.single("image"),
+//   postCreate
+// );
 
 module.exports = router;
