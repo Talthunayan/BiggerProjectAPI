@@ -31,7 +31,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    // Admin:{},
+    admin: {
+      type: DataTypes.BOOLEAN,
+    },
   });
   SequelizeSlugify.slugifyModel(User, {
     source: ["name"],

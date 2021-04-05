@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const passport = require("passport");
+const ip = require("ip");
+require("dotenv").config();
 
 // Initialize app
 const app = express();
@@ -28,7 +30,7 @@ passport.use(jwtStrategy);
 
 // Using routes
 app.use("/rooms", roomRoutes);
-app.use(userRoutes);
+app.use("/users", userRoutes);
 
 // Media
 app.use("/media", express.static(path.join(__dirname, "src/media")));
@@ -50,12 +52,12 @@ app.get("/", (req, res) => {
 // Start server
 const run = async () => {
   try {
-    await db.sequelize.sync({ force: false });
+    await db.sequelize.sync({ alter: true });
     console.log("Server connected to database successfully.");
 
-    app.listen(8000, () => {
-      console.log("Server up and running on port 8000.");
-      console.log("You can connect using http://localhost:8000");
+    app.listen(process.env.PORT, () => {
+      console.log("Express app started succeffully");
+      console.log(`Running on ${ip.address()}:${process.env.PORT}`);
     });
   } catch (error) {
     console.log("Failed to connect to database:", error);
