@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    public: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
   });
   SequelizeSlugify.slugifyModel(Room, {
     source: ["name"],

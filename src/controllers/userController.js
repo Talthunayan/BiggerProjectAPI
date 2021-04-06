@@ -51,7 +51,7 @@ exports.signin = (req, res) => {
   res.json({ token: token });
 };
 
-// Check Username
+// Check username
 exports.checkUsername = async (req, res, next) => {
   try {
     let available = true;

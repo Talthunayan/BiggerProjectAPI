@@ -54,6 +54,7 @@ exports.roomDelete = async (req, res, next) => {
 // //*** Posts ***//
 // // Create post
 // exports.postCreate = async (req, res, next) => {
+// if (req.room.) //
 //   if (req.room.id === req.post.roomId) {
 //     if (req.file) {
 //       req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
