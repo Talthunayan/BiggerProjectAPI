@@ -51,6 +51,19 @@ exports.signin = (req, res) => {
   res.json({ token: token });
 };
 
+// Check Username
+exports.checkUsername = async (req, res, next) => {
+  try {
+    let available = true;
+    const user = await User.findOne({ where: { username: req.body.username } });
+    if (user) available = false;
+
+    res.json({ available });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // *** Commands ***
 
 // Fetch users
