@@ -31,6 +31,8 @@ router.param("roomId", async (req, res, next, roomId) => {
   }
 });
 
+// **** post hierarchy ***
+
 // Using routes
 
 // Add post to room
@@ -39,6 +41,8 @@ router.use(
   passport.authenticate("jwt", { session: false }),
   postRoutes
 );
+
+// **** End hierarchy ***
 
 // Room list
 router.get("/", roomList);

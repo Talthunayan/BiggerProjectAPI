@@ -1,6 +1,7 @@
 // Dependancies
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
 
 // importing
 const upload = require("../middleware/multer");
@@ -11,6 +12,7 @@ const {
   postUpdate,
   postDelete,
   fetchPost,
+  postCreate,
 } = require("../controllers/postController");
 
 // Param Middleware
@@ -34,5 +36,13 @@ router.delete("/:postId", postDelete);
 
 // Updating Posts
 router.put("/:postId", upload.single("image"), postUpdate);
+
+// Post Create
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  postCreate
+);
 
 module.exports = router;

@@ -48,7 +48,7 @@ exports.roomCreate = async (req, res, next) => {
       const newRoom = await Room.create({
         name: req.body.name,
         description: req.body.description,
-        // admin: req.user.username,
+        admin: req.user.username,
       });
       newRoom.addUser(req.user);
       res.status(201).json(newRoom);

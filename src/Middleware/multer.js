@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
   filename: (request, file, nameFile) => {
     nameFile(
       null,
-      `${slugify(request.body.name.toLowerCase() + Date.now())}.${
+      `${slugify(request.body.text.toLowerCase() + Date.now())}.${
         file.originalname.split(".")[1]
       }`
     );
