@@ -17,6 +17,7 @@ const {
   fetchRoom,
   roomCreate,
   inviteUsers,
+  removeUser,
 } = require("../controllers/roomController");
 
 // Param Middleware
@@ -32,7 +33,7 @@ router.param("roomId", async (req, res, next, roomId) => {
   }
 });
 
-// **** post hierarchy ***
+// **** hierarchy ***
 
 // Using routes
 router.use(
@@ -41,8 +42,11 @@ router.use(
   postRoutes
 );
 
-// Assign room to user
+// Assign user to room
 router.post("/:roomId/users", inviteUsers);
+
+// Remove user from room
+router.delete("/:roomId/users", removeUser);
 
 // **** End hierarchy ***
 
@@ -54,13 +58,6 @@ router.post("/", roomCreate);
 
 // Deleting Rooms
 router.delete("/:roomId", roomDelete);
-
-// // Delteing Rooms from User ( Super Sus*)
-// router.delete(
-//   "/:userId/rooms",
-//   passport.authenticate("jwt", { session: false }),
-//   removeRoom
-// );
 
 // Updating Rooms
 router.put("/:roomId", roomUpdate);
