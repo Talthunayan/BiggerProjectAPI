@@ -10,7 +10,6 @@ require("dotenv").config();
 const app = express();
 
 // Importing routes
-const postRoutes = require("./routes/posts");
 const roomRoutes = require("./routes/rooms");
 const userRoutes = require("./routes/users");
 
@@ -30,7 +29,6 @@ passport.use(localStrategy);
 passport.use(jwtStrategy);
 
 // Using routes
-app.use("/posts", postRoutes);
 app.use("/rooms", roomRoutes);
 app.use("/users", userRoutes);
 

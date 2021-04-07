@@ -1,6 +1,3 @@
-// Slug
-const SequelizeSlugify = require("sequelize-slugify");
-
 module.exports = (sequelize, DataTypes) => {
   const Post = sequelize.define("Post", {
     text: {
@@ -11,9 +8,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-  });
-  SequelizeSlugify.slugifyModel(Post, {
-    source: ["text"],
   });
   return Post;
 };

@@ -14,7 +14,8 @@ const {
   userList,
   userUpdate,
   userDelete,
-  postCreate,
+  // postCreate,
+  // assignToRoom,
 } = require("../controllers/userController");
 
 // Sign up "register"
@@ -49,12 +50,17 @@ router.delete("/:userId", userDelete);
 // Updating Users
 router.put("/:userId", upload.single("image"), userUpdate);
 
-// Linking A Post to A User
-router.post(
-  "/:userId/posts",
-  passport.authenticate("jwt", { session: false }),
-  upload.single("image"),
-  postCreate
-);
+// // Linking A Post to A User
+// router.post(
+//   "/:userId/posts",
+//   passport.authenticate("jwt", { session: false }),
+//   upload.single("image"),
+//   postCreate
+// );
+
+// ********** Room relation **********
+
+// // Assign Room to User
+// router.post("/:userId/rooms", assignToRoom);
 
 module.exports = router;

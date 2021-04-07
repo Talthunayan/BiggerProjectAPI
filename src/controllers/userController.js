@@ -69,7 +69,20 @@ exports.checkUsername = async (req, res, next) => {
 // Fetch users
 exports.fetchUser = async (userId, next) => {
   try {
-    const user = await User.findByPk(userId);
+    const user = await User.findByPk(userId, {
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+      include: {
+        model: Room,
+        as: "room",
+        attributes: {
+          include: ["id", "name"],
+          exclude: ["createdAt", "updatedAt"],
+          through: {
+            attributes: [],
+          },
+        },
+      },
+    });
     return user;
   } catch (error) {
     next(error);
@@ -81,11 +94,17 @@ exports.userList = async (req, res, next) => {
   try {
     const users = await User.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
-      // include: {
-      //   model: Product,
-      //   as: "products",
-      //   attributes: { exclude: ["createdAt", "updatedAt"] },
-      // },
+      include: {
+        model: Room,
+        as: "room",
+        attributes: {
+          include: ["id", "name"],
+          exclude: ["createdAt", "updatedAt"],
+          through: {
+            attributes: [],
+          },
+        },
+      },
     });
     res.json(users);
   } catch (err) {
@@ -112,23 +131,6 @@ exports.userDelete = async (req, res, next) => {
     await req.user.destroy();
     res.status(204).end();
   } catch (err) {
-    next(err);
-  }
-};
-//*** Posts ***//
-// Create post
-exports.postCreate = async (req, res, next) => {
-  console.log("userId", req.post.userId);
-  if (req.user.id === req.post.userId) {
-    if (req.file) {
-      req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
-    }
-    req.body.userId = req.user.id;
-    const newPost = await Post.create(req.body);
-    res.status(201).json(newPost);
-  } else {
-    const err = new Error("Unauthorized");
-    err.status = 401;
     next(err);
   }
 };

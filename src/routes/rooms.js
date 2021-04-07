@@ -3,6 +3,9 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 
+// importing Routes
+const postRoutes = require("./posts");
+
 // importing
 const upload = require("../middleware/multer");
 
@@ -12,7 +15,7 @@ const {
   roomUpdate,
   roomDelete,
   fetchRoom,
-  // postCreate,
+  roomCreate,
 } = require("../controllers/roomController");
 
 // Param Middleware
@@ -28,21 +31,32 @@ router.param("roomId", async (req, res, next, roomId) => {
   }
 });
 
+// Using routes
+
+// Add post to room
+router.use(
+  "/:roomId/posts",
+  passport.authenticate("jwt", { session: false }),
+  postRoutes
+);
+
 // Room list
 router.get("/", roomList);
+
+// Creating Rooms
+router.post("/", passport.authenticate("jwt", { session: false }), roomCreate);
 
 // Deleting Rooms
 router.delete("/:roomId", roomDelete);
 
+// // Delteing Rooms from User ( Super Sus*)
+// router.delete(
+//   "/:userId/rooms",
+//   passport.authenticate("jwt", { session: false }),
+//   removeRoom
+// );
+
 // Updating Rooms
 router.put("/:roomId", roomUpdate);
-
-// // Adding Posts to Room
-// router.post(
-//   "/:roomId/posts",
-//   passport.authenticate("jwt", { session: false }),
-//   upload.single("image"),
-//   postCreate
-// );
 
 module.exports = router;

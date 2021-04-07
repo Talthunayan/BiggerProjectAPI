@@ -1,7 +1,6 @@
 // Dependancies
 const express = require("express");
 const router = express.Router();
-const passport = require("passport");
 
 // importing
 const upload = require("../middleware/multer");

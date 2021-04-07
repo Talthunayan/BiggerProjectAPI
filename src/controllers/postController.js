@@ -12,6 +12,7 @@ exports.fetchPost = async (postId, next) => {
         {
           model: Room,
           as: "room",
+          attributes: ["id"],
         },
       ],
     });
@@ -24,33 +25,33 @@ exports.fetchPost = async (postId, next) => {
 // Post list
 exports.postList = async (req, res, next) => {
   try {
-    const posts = await Post.findAll({
-      attributes: { exclude: ["createdAt", "updatedAt"] },
-      include: {
-        model: Room,
-        as: "room",
-        attributes: { exclude: ["createdAt", "updatedAt"] },
-      },
-    });
-    res.json(posts);
+    if (req.room.user.find((user) => user.id === req.user.id)) {
+      res.json(req.room.post);
+    } else {
+      res.json({ message: "Room has no posts" });
+    }
   } catch (err) {
     next(err);
   }
 };
 
-// // Create post
-// exports.postCreate = async (req, res, next) => {
-//   try {
-//     if (req.file) {
-//       req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
-//     }
-//     //   req.body.userId = req.user.id; // relation stuff
-//     const newPost = await Post.create(req.body);
-//     res.status(201).json(newPost);
-//   } catch (err) {
-//     next(err);
-//   }
-// };
+// Create Post
+exports.postCreate = async (req, res, next) => {
+  try {
+    // const { roomId } = req.params;
+    // console.log(roomId);
+    // res.end();
+    const newPost = await Post.create({
+      text: req.body.text,
+      userId: req.user.id,
+      roomId: req.room.id,
+    });
+
+    res.status(201).json(newPost);
+  } catch (err) {
+    next(err);
+  }
+};
 
 // Update post
 exports.postUpdate = async (req, res, next) => {

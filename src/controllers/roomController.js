@@ -2,12 +2,29 @@
 const slugify = require("slugify");
 
 // Databse
-const { Room, Post } = require("../db/models");
+const { Room, Post, User } = require("../db/models");
+
+// Include Convention
+const includeHasan = {
+  attributes: { exclude: ["createdAt", "updatedAt"] },
+  include: [
+    {
+      model: Post,
+      as: "post",
+      attributes: ["id", "text"],
+    },
+    {
+      model: User,
+      as: "user",
+      attributes: ["id"],
+    },
+  ],
+};
 
 // Fetch room
 exports.fetchRoom = async (roomId, next) => {
   try {
-    const room = await Room.findByPk(roomId);
+    const room = await Room.findByPk(roomId, includeHasan);
     return room;
   } catch (error) {
     next(error);
@@ -17,15 +34,25 @@ exports.fetchRoom = async (roomId, next) => {
 // Room list
 exports.roomList = async (req, res, next) => {
   try {
-    const rooms = await Room.findAll({
-      attributes: { exclude: ["createdAt", "updatedAt"] },
-      include: {
-        model: Post,
-        as: "post",
-        attributes: ["id"],
-      },
-    });
+    const rooms = await Room.findAll(includeHasan);
     res.json(rooms);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Create Room (Salem)
+exports.roomCreate = async (req, res, next) => {
+  try {
+    if (req.user) {
+      const newRoom = await Room.create({
+        name: req.body.name,
+        description: req.body.description,
+        // admin: req.user.username,
+      });
+      newRoom.addUser(req.user);
+      res.status(201).json(newRoom);
+    }
   } catch (err) {
     next(err);
   }
@@ -34,8 +61,12 @@ exports.roomList = async (req, res, next) => {
 // Update room
 exports.roomUpdate = async (req, res, next) => {
   try {
-    await req.room.update(req.body);
-    res.status(204).end();
+    if (req.user.username === req.room.admin) {
+      await req.room.update(req.body);
+      res.status(204).end();
+    } else {
+      res.json({ message: "Unauthorized Admin" }).end();
+    }
   } catch (err) {
     next(err);
   }
@@ -44,27 +75,26 @@ exports.roomUpdate = async (req, res, next) => {
 // Delete room
 exports.roomDelete = async (req, res, next) => {
   try {
-    await req.room.destroy();
-    res.status(204).end();
+    if (req.user.username === req.room.admin) {
+      await req.room.destroy();
+      res.status(204).end();
+    } else {
+      res.json({ message: "Unauthorized Admin" }).end();
+    }
   } catch (err) {
     next(err);
   }
 };
 
-// //*** Posts ***//
-// // Create post
-// exports.postCreate = async (req, res, next) => {
-// if (req.room.) //
-//   if (req.room.id === req.post.roomId) {
-//     if (req.file) {
-//       req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
-//     }
-//     req.body.roomId = req.room.id;
-//     const newPost = await Post.create(req.body);
-//     res.status(201).json(newPost);
-//   } else {
-//     const err = new Error("Unauthorized");
-//     err.status = 401;
-//     next(err);
+// // Remove or delinking Room from User (Sus form*)
+// exports.removeRoom = async (req, res, next) => {
+//   try {
+//     const room = await Room.findByPk(req.body.roomId);
+
+//     req.user.removeRoom(room);
+
+//     res.status(200).end();
+//   } catch (error) {
+//     next(error);
 //   }
 // };
