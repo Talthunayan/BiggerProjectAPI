@@ -83,4 +83,18 @@ db.Room.belongsToMany(db.User, {
   foreignKey: "roomId",
 });
 
+// User to User (many-many relation)
+// db.User.belongsToMany(db.User, {
+//   as: "user a",
+//   through: db.Friend,
+//   foreignKey: "user1Id",
+//   unique: true,
+// });
+// db.User.belongsToMany(db.User, {
+//   as: "user b",
+//   through: db.Friend,
+//   foreignKey: "user2Id",
+//   unique: true,
+// });
+
 module.exports = db;

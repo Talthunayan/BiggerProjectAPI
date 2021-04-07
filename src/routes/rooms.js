@@ -16,6 +16,7 @@ const {
   roomDelete,
   fetchRoom,
   roomCreate,
+  inviteUsers,
 } = require("../controllers/roomController");
 
 // Param Middleware
@@ -39,6 +40,9 @@ router.use(
   passport.authenticate("jwt", { session: false }),
   postRoutes
 );
+
+// Assign room to user
+router.post("/:roomId/users", inviteUsers);
 
 // **** End hierarchy ***
 

@@ -86,6 +86,21 @@ exports.roomDelete = async (req, res, next) => {
   }
 };
 
+// Assign room to user "invite"
+exports.inviteUsers = async (req, res, next) => {
+  try {
+    if (req.user.username === req.room.admin) {
+      const user = await User.findByPk(req.body.userId);
+      req.room.addUser(user);
+      res.status(200).end();
+    } else {
+      res.json({ message: "Unauthorized Admin" }).end();
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 // // Remove or delinking Room from User (Sus form*)
 // exports.removeRoom = async (req, res, next) => {
 //   try {
