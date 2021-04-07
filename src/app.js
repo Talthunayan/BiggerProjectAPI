@@ -29,7 +29,7 @@ passport.use(localStrategy);
 passport.use(jwtStrategy);
 
 // Using routes
-app.use("/rooms", passport.authenticate("jwt", { session: false }), roomRoutes);
+app.use("/rooms", roomRoutes);
 app.use("/users", userRoutes);
 
 // Media

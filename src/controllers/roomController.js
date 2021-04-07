@@ -41,6 +41,26 @@ exports.roomList = async (req, res, next) => {
   }
 };
 
+// // My Room list
+// exports.myRoomList = async (req, res, next) => {
+//   try {
+//     const rooms = await Room.findAll(includeHasan);
+//     res.json(rooms);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
+// // Explore Room list
+// exports.exploreRoomList = async (req, res, next) => {
+//   try {
+//     const rooms = await Room.findAll(includeHasan);
+//     res.json(rooms);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
 // Create Room (Salem)
 exports.roomCreate = async (req, res, next) => {
   try {
@@ -117,16 +137,3 @@ exports.removeUser = async (req, res, next) => {
     next(error);
   }
 };
-
-// // Remove or delinking Room from User (Sus form*)
-// exports.removeRoom = async (req, res, next) => {
-//   try {
-//     const room = await Room.findByPk(req.body.roomId);
-
-//     req.user.removeRoom(room);
-
-//     res.status(200).end();
-//   } catch (error) {
-//     next(error);
-//   }
-// };

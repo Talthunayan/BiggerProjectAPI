@@ -43,10 +43,18 @@ router.use(
 );
 
 // Assign user to room
-router.post("/:roomId/users", inviteUsers);
+router.post(
+  "/:roomId/users",
+  passport.authenticate("jwt", { session: false }),
+  inviteUsers
+);
 
 // Remove user from room
-router.delete("/:roomId/users", removeUser);
+router.delete(
+  "/:roomId/users",
+  passport.authenticate("jwt", { session: false }),
+  removeUser
+);
 
 // **** End hierarchy ***
 
@@ -54,12 +62,20 @@ router.delete("/:roomId/users", removeUser);
 router.get("/", roomList);
 
 // Creating Rooms
-router.post("/", roomCreate);
+router.post("/", passport.authenticate("jwt", { session: false }), roomCreate);
 
 // Deleting Rooms
-router.delete("/:roomId", roomDelete);
+router.delete(
+  "/:roomId",
+  passport.authenticate("jwt", { session: false }),
+  roomDelete
+);
 
 // Updating Rooms
-router.put("/:roomId", roomUpdate);
+router.put(
+  "/:roomId",
+  passport.authenticate("jwt", { session: false }),
+  roomUpdate
+);
 
 module.exports = router;
