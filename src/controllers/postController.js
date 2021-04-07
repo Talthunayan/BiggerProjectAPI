@@ -45,6 +45,7 @@ exports.postCreate = async (req, res, next) => {
       text: req.body.text,
       userId: req.user.id,
       roomId: req.room.id,
+      // image: req.body.image,
     });
 
     res.status(201).json(newPost);
