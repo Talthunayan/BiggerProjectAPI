@@ -34,8 +34,6 @@ router.param("roomId", async (req, res, next, roomId) => {
 // **** post hierarchy ***
 
 // Using routes
-
-// Add post to room
 router.use(
   "/:roomId/posts",
   passport.authenticate("jwt", { session: false }),
@@ -48,7 +46,7 @@ router.use(
 router.get("/", roomList);
 
 // Creating Rooms
-router.post("/", passport.authenticate("jwt", { session: false }), roomCreate);
+router.post("/", roomCreate);
 
 // Deleting Rooms
 router.delete("/:roomId", roomDelete);

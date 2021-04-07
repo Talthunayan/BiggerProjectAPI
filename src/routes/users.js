@@ -4,7 +4,7 @@ const router = express.Router();
 const passport = require("passport");
 
 // importing
-const upload = require("../middleware/multer");
+// const upload = require("../middleware/multer");
 
 // Controllers
 const {
@@ -48,19 +48,6 @@ router.get("/", userList);
 router.delete("/:userId", userDelete);
 
 // Updating Users
-router.put("/:userId", upload.single("image"), userUpdate);
-
-// // Linking A Post to A User
-// router.post(
-//   "/:userId/posts",
-//   passport.authenticate("jwt", { session: false }),
-//   upload.single("image"),
-//   postCreate
-// );
-
-// ********** Room relation **********
-
-// // Assign Room to User
-// router.post("/:userId/rooms", assignToRoom);
+router.put("/:userId", userUpdate);
 
 module.exports = router;
