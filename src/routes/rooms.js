@@ -18,6 +18,8 @@ const {
   roomCreate,
   inviteUsers,
   removeUser,
+  myRoomList,
+  exploreRoomList,
 } = require("../controllers/roomController");
 
 // Param Middleware
@@ -76,6 +78,20 @@ router.put(
   "/:roomId",
   passport.authenticate("jwt", { session: false }),
   roomUpdate
+);
+
+// My Room list
+router.get(
+  "/myRooms",
+  passport.authenticate("jwt", { session: false }),
+  myRoomList
+);
+
+// Explore Room list
+router.get(
+  "/exploreRooms",
+  passport.authenticate("jwt", { session: false }),
+  exploreRoomList
 );
 
 module.exports = router;
